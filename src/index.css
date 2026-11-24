@@ -1,0 +1,213 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-abyss: #080d18;
+  --color-abyss-soft: #0b1322;
+  --color-surface: #111827;
+  --color-surface-2: #162034;
+  --color-line: #22304b;
+  --color-primary: #38bdf8;
+  --color-accent: #a78bfa;
+  --color-text: #f8fafc;
+  --color-muted: #8a9ab8;
+  --color-faint: #5a6883;
+
+  --font-display: 'Space Grotesk Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono Variable', ui-monospace, monospace;
+
+  --shadow-float: 0 24px 70px -30px rgba(0, 0, 0, 0.9);
+  --ease-expo: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-line);
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    margin: 0;
+    background-color: var(--color-abyss);
+    color: var(--color-text);
+    font-family: var(--font-sans);
+    font-size: 15px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+
+  #root {
+    position: relative;
+    isolation: isolate;
+    min-height: 100vh;
+  }
+
+  ::selection {
+    background: color-mix(in oklab, var(--color-primary) 28%, transparent);
+    color: #fff;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #0a1120;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #23314a;
+    border-radius: 999px;
+    border: 2px solid #0a1120;
+  }
+}
+
+@utility grid-field {
+  background-image:
+    linear-gradient(to right, rgba(56, 189, 248, 0.055) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(56, 189, 248, 0.055) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+
+@utility glass {
+  background: rgba(17, 24, 39, 0.66);
+  backdrop-filter: blur(14px) saturate(120%);
+  -webkit-backdrop-filter: blur(14px) saturate(120%);
+  border: 1px solid rgba(248, 250, 252, 0.08);
+}
+
+@utility panel {
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+  border-radius: 14px;
+}
+
+@utility hairline {
+  border-top: 1px solid color-mix(in oklab, var(--color-line) 70%, transparent);
+}
+
+@utility label-xs {
+  font-size: 11px;
+  line-height: 1.2;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-faint);
+}
+
+@utility scrollbar-none {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@utility num {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+
+@utility link-underline {
+  text-decoration: none;
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 0% 1px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  transition: background-size 200ms var(--ease-expo);
+  &:hover {
+    background-size: 100% 1px;
+  }
+}
+
+@keyframes sheen {
+  0% { transform: translateX(-60%); opacity: 0; }
+  40% { opacity: 0.55; }
+  100% { transform: translateX(60%); opacity: 0; }
+}
+
+@keyframes pulse-soft {
+  0%, 100% { opacity: 0.35; }
+  50% { opacity: 0.8; }
+}
+
+@keyframes drift {
+  0% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(0, -8px, 0); }
+  100% { transform: translate3d(0, 0, 0); }
+}
+
+/* Periodic table tiles ---------------------------------------------------- */
+:root {
+  --tile-h: 48px;
+}
+@media (min-width: 640px) {
+  :root {
+    --tile-h: 56px;
+  }
+}
+@media (min-width: 1024px) {
+  :root {
+    --tile-h: 61px;
+  }
+}
+
+.el-tile {
+  transition:
+    transform 150ms var(--ease-expo),
+    box-shadow 150ms var(--ease-expo),
+    border-color 150ms var(--ease-expo),
+    opacity 200ms var(--ease-expo);
+  will-change: transform;
+}
+
+.el-tile:hover {
+  transform: translateY(-2px);
+  border-color: var(--tile-color) !important;
+  box-shadow:
+    0 0 0 1px color-mix(in oklab, var(--tile-color) 55%, transparent),
+    0 12px 28px -14px var(--tile-color);
+  z-index: 5;
+}
+
+.el-tile:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.el-tile:focus-visible {
+  outline: 1px solid var(--tile-color);
+  outline-offset: 1px;
+}
+
+.table-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: #23314a transparent;
+}
+
+@media (max-width: 767px) {
+  .el-tile:hover {
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
